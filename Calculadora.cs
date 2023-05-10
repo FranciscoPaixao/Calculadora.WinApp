@@ -122,6 +122,10 @@ namespace Calculadora.Winapp
         {
             double resultado = 0;
             string operador = "";
+            if (listaCalculadora[0].Length == 0 || listaCalculadora[listaCalculadora.Count - 1] == "")
+            {
+                return;
+            }
             foreach (string item in listaCalculadora)
             {
                 if (ehOperador(item))
@@ -146,7 +150,7 @@ namespace Calculadora.Winapp
                             resultado /= Convert.ToDouble(item);
                             break;
                         default:
-                            resultado = Convert.ToDouble(item);
+                            
                             break;
                     }
                 }
