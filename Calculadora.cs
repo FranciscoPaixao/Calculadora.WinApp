@@ -6,8 +6,10 @@ namespace Calculadora.Winapp
         public int indiceLista;
         public Calculadora()
         {
-            listaCalculadora = new List<String>();
-            listaCalculadora.Add("");
+            listaCalculadora = new List<String>
+            {
+                ""
+            };
             indiceLista = 0;
             InitializeComponent();
         }
@@ -15,9 +17,7 @@ namespace Calculadora.Winapp
         private void btnClick(object sender, EventArgs e)
         {
             Button botaoClicado = (Button)sender;
-            string nomeBotao = botaoClicado.Name;
-
-            switch (nomeBotao)
+            switch (botaoClicado.Name)
             {
                 case "btnZero":
                     AdicionarNumeroNaLista("0");
@@ -49,6 +49,9 @@ namespace Calculadora.Winapp
                 case "btnNine":
                     AdicionarNumeroNaLista("9");
                     break;
+                case "btnComma":
+                    AdicionarNumeroNaLista(",");
+                    break;
                 case "btnPlus":
                     AdicionarOperadorNaLista("+");
                     break;
@@ -58,7 +61,7 @@ namespace Calculadora.Winapp
                 case "btnMul":
                     AdicionarOperadorNaLista("*");
                     break;
-                case "btnDivide":
+                case "btnDiv":
                     AdicionarOperadorNaLista("/");
                     break;
                 case "btnEqual":
@@ -67,10 +70,12 @@ namespace Calculadora.Winapp
                 case "btnDel":
                     RemoverUltimoCaractere();
                     break;
+                default:
+                    break;
             }
             AtualizarTela();
         }
-        public bool ehOperador(string operador)
+        public static bool ehOperador(string operador)
         {
             return operador.Contains("+") || operador.Contains("-") || operador.Contains("*") || operador.Contains("/");
         }
@@ -85,7 +90,7 @@ namespace Calculadora.Winapp
             {
                 listaCalculadora.Add(operador);
                 listaCalculadora.Add("");
-                this.indiceLista = listaCalculadora.Count - 1;
+                indiceLista = listaCalculadora.Count - 1;
             }
         }
         public void AdicionarNumeroNaLista(string numero)
@@ -96,7 +101,7 @@ namespace Calculadora.Winapp
         {
             listaCalculadora.RemoveAt(listaCalculadora.Count - 1);
             listaCalculadora.Sort();
-            this.indiceLista = listaCalculadora.Count - 1;
+            indiceLista = listaCalculadora.Count - 1;
         }
         public void RemoverUltimoCaractere()
         {
@@ -106,7 +111,7 @@ namespace Calculadora.Winapp
             }
             else
             {
-                listaCalculadora[indiceLista] = listaCalculadora[indiceLista].Substring(0, listaCalculadora[indiceLista].Length - 1);
+                listaCalculadora[indiceLista] = listaCalculadora[indiceLista][..^1];
             }
         }
         public void AtualizarTela()
@@ -122,35 +127,36 @@ namespace Calculadora.Winapp
         {
             double resultado = 0;
             string operador = "";
-            if (listaCalculadora[0].Length == 0 || listaCalculadora[listaCalculadora.Count - 1] == "")
+            
+            if (listaCalculadora[0].Length == 0 || listaCalculadora[^1] == "")
             {
                 return;
             }
+            
             foreach (string item in listaCalculadora)
             {
                 if (ehOperador(item))
                 {
                     operador = item;
-                    continue;
                 }
                 else
                 {
                     switch (operador)
                     {
                         case "+":
-                            resultado += Convert.ToDouble(item);
+                            resultado += Double.Parse(item);
                             break;
                         case "-":
-                            resultado -= Convert.ToDouble(item);
+                            resultado -= Double.Parse(item);
                             break;
                         case "*":
-                            resultado *= Convert.ToDouble(item);
+                            resultado *= Double.Parse(item);
                             break;
                         case "/":
-                            resultado /= Convert.ToDouble(item);
+                            resultado /= Double.Parse(item);
                             break;
                         default:
-                            
+                            resultado = Double.Parse(item);
                             break;
                     }
                 }
